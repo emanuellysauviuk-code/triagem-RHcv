@@ -378,7 +378,7 @@ Responda APENAS com JSON válido. Sem markdown, sem texto antes ou depois do JSO
     content = prompt + '\n\nCV:\n' + dados.conteudo.substring(0, 3500);
   }
 
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+  const resp = await fetch('http://localhost:3000/analisar', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
