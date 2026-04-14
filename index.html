@@ -3,635 +3,720 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Triagem de CVs — AlmeidaKrüger R&S</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Triagem Inteligente — AlmeidaKrüger R&S</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy: #0B1F3A;
-  --blue: #1B4F8C;
-  --accent: #E8334A;
-  --gold: #F5A623;
-  --green: #3DD68C;
-  --muted: #6B7FA3;
-  --border: rgba(255,255,255,0.09);
-  --r: 14px;
-  --rs: 10px;
+:root{
+  --navy:#03354C;--red:#C1292E;--red2:#9e1f23;
+  --gold:#F5A623;--green:#3DD68C;--blue:#7FB3E8;
+  --gray1:#BDBCBC;--gray2:#9D9D9C;
+  --muted:rgba(255,255,255,.45);--border:rgba(255,255,255,.09);
+  --surface:rgba(255,255,255,.04);--r:14px;--rs:10px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--navy);
-  color: #fff;
-  min-height: 100vh;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(27,79,140,.35) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85% 80%, rgba(232,51,74,.12) 0%, transparent 55%);
-  pointer-events: none; z-index: 0;
-}
-.wrap { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:#fff;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(193,41,46,.18) 0%,transparent 55%);pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:28px 18px 70px;}
 
-/* ── Header ── */
-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
-.logo { display: flex; align-items: center; gap: 12px; }
-.logo-badge { width: 42px; height: 42px; background: var(--accent); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -1px; }
-.logo-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
-.logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
-.tag { background: rgba(245,166,35,.15); border: 1px solid rgba(245,166,35,.3); color: var(--gold); font-size: 10px; font-weight: 500; padding: 4px 11px; border-radius: 20px; letter-spacing: .8px; text-transform: uppercase; }
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08);}
+.brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.brand em{color:var(--red);font-style:normal;}
+.badge-header{background:rgba(193,41,46,.15);border:1px solid rgba(193,41,46,.3);color:#e87070;font-size:10px;padding:4px 11px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;}
 
-/* ── Hero ── */
-.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 38px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 8px; }
-.hero h1 em { color: var(--accent); font-style: normal; }
-.hero p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 28px; }
+/* Hero */
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:300;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px;}
+.hero h1 strong{color:var(--red);font-weight:700;}
+.hero p{color:var(--gray1);font-size:13px;line-height:1.6;margin-bottom:24px;}
 
-/* ── Cards ── */
-.card { background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 14px; }
-.card-label { font-size: 10px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.card-label::before { content: ''; width: 16px; height: 2px; background: var(--accent); border-radius: 2px; display: inline-block; }
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:12px;}
+.clabel{font-size:10px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;color:var(--gray2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.clabel::before{content:'';width:16px;height:2px;background:var(--red);border-radius:2px;display:inline-block;}
 
-/* ── API Key section ── */
-.api-section { background: rgba(245,166,35,.06); border: 1px solid rgba(245,166,35,.2); border-radius: var(--r); padding: 20px 22px; margin-bottom: 14px; }
-.api-section .card-label::before { background: var(--gold); }
-.api-row { display: flex; gap: 10px; align-items: center; }
-.api-input { flex: 1; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.12); border-radius: var(--rs); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 11px 14px; outline: none; transition: border-color .2s; }
-.api-input:focus { border-color: rgba(245,166,35,.5); }
-.api-input::placeholder { color: rgba(107,127,163,.5); }
-.api-save { padding: 11px 20px; background: rgba(245,166,35,.15); border: 1px solid rgba(245,166,35,.35); border-radius: var(--rs); color: var(--gold); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all .2s; }
-.api-save:hover { background: rgba(245,166,35,.25); }
-.api-status { font-size: 12px; margin-top: 8px; display: none; }
-.api-status.ok { color: var(--green); display: block; }
-.api-status.err { color: #FF8A98; display: block; }
-.api-help { font-size: 11px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
-.api-help a { color: var(--gold); text-decoration: none; }
-.api-help a:hover { text-decoration: underline; }
+/* Vaga selector */
+.vaga-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.vaga-btn{background:var(--surface);border:2px solid rgba(255,255,255,.1);border-radius:var(--rs);padding:13px 15px;cursor:pointer;text-align:left;transition:all .2s;width:100%;}
+.vaga-btn:hover{border-color:rgba(193,41,46,.4);background:rgba(193,41,46,.08);}
+.vaga-btn.active{border-color:var(--red);background:rgba(193,41,46,.15);}
+.vaga-btn .vb-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;}
+.vaga-btn.active .vb-title{color:#e87070;}
+.vaga-btn .vb-sub{font-size:11px;color:var(--gray2);line-height:1.4;}
 
-/* ── Vaga info ── */
-.vaga-box { background: rgba(27,79,140,.15); border: 1px solid rgba(27,79,140,.3); border-radius: var(--rs); padding: 14px 16px; }
-.vaga-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-.vaga-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+/* Upload */
+.fmt-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px;}
+.fmt-chip{padding:2px 9px;border-radius:10px;font-size:10px;}
+.dropzone{border:2px dashed rgba(255,255,255,.15);border-radius:var(--rs);padding:24px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.dropzone:hover,.dropzone.drag{border-color:rgba(193,41,46,.5);background:rgba(193,41,46,.06);}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.dz-icon{font-size:26px;margin-bottom:7px;opacity:.4;display:block;}
+.dz-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;}
+.dz-sub{font-size:11px;color:var(--gray2);}
 
-/* ── Dropzone ── */
-.dropzone { border: 2px dashed rgba(255,255,255,.15); border-radius: var(--rs); padding: 32px 20px; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
-.dropzone:hover, .dropzone.drag { border-color: rgba(27,79,140,.7); background: rgba(27,79,140,.08); }
-.dropzone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.dz-icon { font-size: 32px; margin-bottom: 10px; opacity: .5; }
-.dz-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-.dz-sub { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
-.fmt-badges { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
-.fmt-badge { padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 500; }
+/* File list */
+.file-list{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.file-item{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 11px;}
+.file-ext{width:28px;height:28px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+.file-name{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-sz{font-size:10px;color:var(--gray2);flex-shrink:0;}
+.file-ok{font-size:9px;padding:2px 7px;border-radius:6px;background:rgba(61,214,140,.12);color:var(--green);flex-shrink:0;}
+.file-rm{width:20px;height:20px;background:rgba(255,255,255,.06);border:none;border-radius:4px;cursor:pointer;color:var(--gray2);flex-shrink:0;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.file-rm:hover{background:rgba(193,41,46,.2);color:#e87070;}
 
-/* ── File list ── */
-.file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 7px; }
-.file-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 9px; padding: 9px 12px; }
-.file-icon { width: 32px; height: 32px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
-.file-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.file-size { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-.file-st { font-size: 10px; padding: 2px 8px; border-radius: 7px; flex-shrink: 0; }
-.file-st.ready { background: rgba(61,214,140,.12); color: var(--green); }
-.file-st.err { background: rgba(232,51,74,.12); color: #FF8A98; }
-.file-rm { width: 22px; height: 22px; background: rgba(255,255,255,.06); border: none; border-radius: 5px; cursor: pointer; color: var(--muted); flex-shrink: 0; font-size: 13px; }
-.file-rm:hover { background: rgba(232,51,74,.2); color: #FF8A98; }
+/* Buttons */
+.btn-main{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--red2));border:none;border-radius:var(--rs);color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(193,41,46,.3);}
+.btn-main:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(193,41,46,.4);}
+.btn-main:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.btn-sec{width:100%;padding:11px;background:transparent;border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rs);color:var(--gray2);font-size:13px;cursor:pointer;transition:all .2s;margin-top:8px;}
+.btn-sec:hover{border-color:rgba(255,255,255,.25);color:#fff;}
 
-/* ── Buttons ── */
-.btn-main { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent), #C42040); border: none; border-radius: var(--rs); color: #fff; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 9px; }
-.btn-main:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,51,74,.3); }
-.btn-main:disabled { opacity: .35; cursor: not-allowed; }
-.btn-sec { width: 100%; padding: 12px; background: transparent; border: 1.5px solid rgba(255,255,255,.12); border-radius: var(--rs); color: var(--muted); font-size: 13px; cursor: pointer; transition: all .2s; margin-top: 8px; }
-.btn-sec:hover { border-color: rgba(255,255,255,.25); color: #fff; }
+/* Progress */
+.prog-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.prog-item:last-child{border-bottom:none;}
+.prog-name{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.prog-badges{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.prog-stat{font-size:11px;min-width:100px;text-align:right;}
+.prog-stat.done{color:var(--green);}
+.prog-stat.go{color:var(--gold);}
+.prog-stat.wait{color:var(--gray2);}
+.prog-stat.err{color:#E8334A;}
+@keyframes gira{to{transform:rotate(360deg);}}
+.spinner{width:12px;height:12px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--gold);border-radius:50%;animation:gira .7s linear infinite;flex-shrink:0;}
 
-/* ── Progress ── */
-#progress, #results { display: none; }
-#progress.show, #results.show { display: block; }
-.prog-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
-.prog-item:last-child { border-bottom: none; }
-.prog-name { flex: 1; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.prog-st { font-size: 11px; min-width: 130px; text-align: right; flex-shrink: 0; }
-.prog-st.done { color: var(--green); }
-.prog-st.go { color: var(--gold); }
-.prog-st.wait { color: var(--muted); }
-.prog-st.err { color: #FF8A98; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.1); border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; flex-shrink: 0; }
+/* Results */
+.results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.results-hdr h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;}
+.results-count{background:rgba(193,41,46,.15);border:1px solid rgba(193,41,46,.3);color:#e87070;font-size:11px;padding:4px 11px;border-radius:20px;}
+.rank-bar{display:flex;gap:7px;flex-wrap:wrap;}
+.rank-pill{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid transparent;white-space:nowrap;background:none;}
+.rank-pill:hover{transform:translateY(-1px);}
+.rank-pill.best{background:rgba(61,214,140,.12);border-color:rgba(61,214,140,.3);color:var(--green);}
+.rank-pill.mid{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.25);color:var(--gold);}
+.rank-pill.low{background:rgba(193,41,46,.1);border-color:rgba(193,41,46,.2);color:#e87070;}
 
-/* ── Results ── */
-.results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-.results-header h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
-.results-count { background: rgba(245,166,35,.15); border: 1px solid rgba(245,166,35,.3); color: var(--gold); font-size: 11px; padding: 4px 12px; border-radius: 20px; }
-.rank-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.rank-pill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; white-space: nowrap; transition: transform .15s; }
-.rank-pill:hover { transform: translateY(-1px); }
-.rank-pill.best { background: rgba(61,214,140,.12); border-color: rgba(61,214,140,.3); color: var(--green); }
-.rank-pill.mid { background: rgba(245,166,35,.1); border-color: rgba(245,166,35,.25); color: var(--gold); }
-.rank-pill.low { background: rgba(232,51,74,.1); border-color: rgba(232,51,74,.2); color: #FF8A98; }
+/* CV Cards */
+.cv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .2s;}
+.cv-card.exak{border-color:rgba(193,41,46,.4);}
+.cv-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;}
+.cv-hdr:hover{background:rgba(255,255,255,.02);}
+.rk-num{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;}
+.score-ring{position:relative;flex-shrink:0;}
+.score-ring svg{display:block;transform:rotate(-90deg);}
+.score-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;}
+.cv-info{flex:1;min-width:0;}
+.cv-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.cv-titulo{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cv-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.badge-mini{display:inline-flex;align-items:center;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:500;}
+.badge-aprovar{background:rgba(61,214,140,.2);color:var(--green);}
+.badge-analisar{background:rgba(245,166,35,.15);color:var(--gold);}
+.badge-descartar{background:rgba(193,41,46,.15);color:#E8334A;}
+.badge-alt{background:rgba(127,179,232,.15);color:var(--blue);border:1px solid rgba(127,179,232,.3);}
+.badge-ak{background:rgba(193,41,46,.25);color:#FF8A8A;border:1px solid rgba(193,41,46,.4);font-size:8px;font-weight:700;padding:1px 6px;border-radius:6px;}
+.badge-rs{background:rgba(245,166,35,.15);color:var(--gold);border:1px solid rgba(245,166,35,.35);font-size:8px;font-weight:700;padding:1px 6px;border-radius:6px;}
+.chev{color:var(--gray2);font-size:16px;flex-shrink:0;transition:transform .2s;display:inline-block;}
+.cv-card.open .chev{transform:rotate(180deg);}
 
-/* ── CV Cards ── */
-.cv-card { background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 11px; overflow: hidden; transition: border-color .2s; }
-.cv-card:hover { border-color: rgba(255,255,255,.15); }
-.cv-header { display: flex; align-items: center; gap: 13px; padding: 16px 20px; cursor: pointer; }
-.rank-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 800; }
-.score-ring { position: relative; width: 54px; height: 54px; flex-shrink: 0; }
-.score-ring svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
-.score-val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; }
-.cv-meta { flex: 1; min-width: 0; }
-.cv-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-.cv-title { font-size: 12px; color: rgba(255,255,255,.55); margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.verdict-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 500; }
-.chevron { color: var(--muted); font-size: 18px; flex-shrink: 0; transition: transform .2s; }
-.cv-card.open .chevron { transform: rotate(180deg); }
-.cv-detail { display: none; padding: 0 20px 20px; border-top: 1px solid rgba(255,255,255,.05); }
-.cv-card.open .cv-detail { display: block; }
-.resumo { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.7); margin-top: 12px; padding: 12px 14px; background: rgba(255,255,255,.03); border-radius: 9px; border-left: 3px solid var(--accent); }
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin: 12px 0; }
-@media (max-width: 540px) { .detail-grid { grid-template-columns: 1fr; } }
-.detail-box { padding: 13px; border-radius: 9px; border: 1px solid; }
-.detail-box h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 8px; }
-.detail-item { display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: rgba(255,255,255,.8); margin-bottom: 6px; line-height: 1.4; }
-.detail-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+/* Detail */
+.cv-detail{display:none;padding:0 18px 18px;border-top:1px solid rgba(255,255,255,.05);}
+.cv-card.open .cv-detail{display:block;}
+.alert-box{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:8px;margin-top:10px;margin-bottom:6px;font-size:12px;font-weight:500;line-height:1.4;}
+.alert-ak{background:rgba(193,41,46,.15);border:1px solid rgba(193,41,46,.35);color:#FF8A8A;}
+.alert-rs{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--gold);}
+.alert-alt{background:rgba(127,179,232,.1);border:1px solid rgba(127,179,232,.3);color:var(--blue);}
+.alert-alt-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;color:var(--blue);}
+.resumo-box{font-size:13px;line-height:1.6;color:rgba(255,255,255,.7);padding:11px 13px;background:rgba(3,53,76,.5);border-radius:8px;border-left:3px solid var(--red);margin-top:6px;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+@media(max-width:540px){.detail-grid{grid-template-columns:1fr;}}
+.detail-box{padding:11px;border-radius:8px;border:1px solid;}
+.detail-box h4{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;}
+.detail-item{display:flex;align-items:flex-start;gap:5px;font-size:11px;color:rgba(255,255,255,.8);margin-bottom:5px;line-height:1.4;}
+.detail-dot{width:3px;height:3px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 
-/* ── Message tabs ── */
-.msg-section { margin-top: 14px; }
-.msg-label { font-size: 10px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-.msg-label::before { content: ''; width: 16px; height: 2px; background: var(--accent); border-radius: 2px; display: inline-block; }
-.msg-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-.msg-tab { padding: 5px 12px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,.1); background: transparent; color: var(--muted); font-size: 10px; cursor: pointer; transition: all .2s; }
-.msg-tab.on { background: rgba(27,79,140,.25); border-color: rgba(27,79,140,.5); color: #7FB3E8; }
-.msg-box { display: none; position: relative; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.09); border-radius: 9px; padding: 13px 40px 13px 13px; }
-.msg-box.on { display: block; }
-.msg-text { font-size: 12px; line-height: 1.7; color: rgba(255,255,255,.85); white-space: pre-wrap; }
-.copy-btn { position: absolute; top: 10px; right: 10px; width: 26px; height: 26px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-.copy-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
-.copy-btn.ok { background: rgba(61,214,140,.2); border-color: rgba(61,214,140,.4); color: var(--green); }
+/* Mensagens */
+.msg-sec{margin-top:14px;}
+.msg-label{font-size:10px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase;color:var(--gray2);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.msg-label::before{content:'';width:16px;height:2px;background:var(--red);border-radius:2px;display:inline-block;}
+.msg-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.msg-tab{padding:5px 12px;border-radius:20px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--gray2);font-size:10px;cursor:pointer;transition:all .2s;}
+.msg-tab.active{background:rgba(193,41,46,.2);border-color:rgba(193,41,46,.5);color:#e87070;}
+.msg-box{display:none;position:relative;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.09);border-radius:9px;padding:13px 40px 13px 13px;}
+.msg-box.active{display:block;}
+.msg-text{font-size:12px;line-height:1.7;color:rgba(255,255,255,.85);white-space:pre-wrap;}
+.copy-btn{position:absolute;top:10px;right:10px;width:26px;height:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;cursor:pointer;color:var(--gray2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.copy-btn:hover{background:rgba(255,255,255,.15);color:#fff;}
+.copy-btn.ok{background:rgba(61,214,140,.2);border-color:rgba(61,214,140,.4);color:var(--green);}
 
-footer { text-align: center; margin-top: 36px; font-size: 11px; color: rgba(107,127,163,.35); }
+/* Misc */
+.erro-box{background:rgba(193,41,46,.1);border:1px solid rgba(193,41,46,.3);border-radius:10px;padding:11px 14px;margin-bottom:12px;font-size:13px;color:#e87070;}
+footer{text-align:center;margin-top:28px;font-size:11px;color:rgba(255,255,255,.2);}
+.hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <div class="logo-badge">AK</div>
-      <div>
-        <div class="logo-name">AlmeidaKrüger</div>
-        <div class="logo-sub">Recrutamento & Seleção</div>
-      </div>
-    </div>
-    <div class="tag">IA — Triagem Interna</div>
-  </header>
+<header>
+  <div class="brand">AlmeidaKrüger <em>R&S</em></div>
+  <div class="badge-header">Triagem Interna</div>
+</header>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1>Triagem <em>inteligente</em><br>de candidatos</h1>
-    <p>Plataforma interna de R&S. Anexe CVs em PDF, Word ou imagem — a IA lê, avalia e rankeia por aderência à vaga.</p>
-  </div>
+<div class="hero">
+  <h1>Triagem <strong>inteligente</strong><br>de candidatos</h1>
+  <p>Selecione a vaga, anexe os CVs — a IA rankeia, identifica ex-funcionários e sugere vagas alternativas.</p>
+</div>
 
-  <!-- API Key -->
-  <div class="api-section" id="api-section">
-    <div class="card-label" style="color:#F5A623">Chave de API</div>
-    <div class="api-row">
-      <input class="api-input" type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off">
-      <button class="api-save" onclick="saveApiKey()">Salvar</button>
-    </div>
-    <div class="api-status" id="api-status"></div>
-    <div class="api-help">
-      Sua chave é salva apenas no seu navegador (localStorage). Nunca sai do seu computador.<br>
-      Não tem uma chave? <a href="https://console.anthropic.com/settings/keys" target="_blank">Acesse console.anthropic.com → API Keys → Create Key</a>
+<div id="erro-box" class="erro-box hidden"></div>
+
+<!-- FORMULÁRIO -->
+<div id="form-area">
+  <div class="card">
+    <div class="clabel">Selecione a vaga</div>
+    <div class="vaga-grid">
+      <button class="vaga-btn active" data-vaga="executivo" onclick="selecionarVaga('executivo')">
+        <div class="vb-title">Executivo de Vendas</div>
+        <div class="vb-sub">CLT · Fixo R$1.700 + ajuda R$1.200 + variável a partir de R$6.000</div>
+      </button>
+      <button class="vaga-btn" data-vaga="supervisor" onclick="selecionarVaga('supervisor')">
+        <div class="vb-title">Supervisor Comercial</div>
+        <div class="vb-sub">CLT · Fixo R$2.500 + ajuda R$1.440 + variável sem teto</div>
+      </button>
     </div>
   </div>
 
-  <!-- Main form -->
-  <div id="form-area">
-    <!-- Vaga -->
-    <div class="card">
-      <div class="card-label">Vaga selecionada</div>
-      <div class="vaga-box">
-        <div class="vaga-title">Executivo de Vendas — CLT · AlmeidaKrüger / Santander</div>
-        <div class="vaga-sub">Prospecção ativa PJ · Fixo R$1.700 + ajuda de custo R$1.200 + variável a partir de R$6.000 · Experiência mínima 6 meses em vendas externas</div>
-      </div>
+  <div class="card">
+    <div class="clabel">Anexe os CVs (até 50 arquivos)</div>
+    <div class="fmt-row">
+      <span class="fmt-chip" style="background:rgba(193,41,46,.15);color:#e87070;border:1px solid rgba(193,41,46,.3)">PDF</span>
+      <span class="fmt-chip" style="background:rgba(255,255,255,.08);color:#BDBCBC;border:1px solid rgba(255,255,255,.15)">DOC/DOCX</span>
+      <span class="fmt-chip" style="background:rgba(61,214,140,.1);color:#3DD68C;border:1px solid rgba(61,214,140,.2)">PNG/JPG</span>
+      <span class="fmt-chip" style="background:rgba(245,166,35,.1);color:#F5A623;border:1px solid rgba(245,166,35,.2)">PDF Escaneado</span>
     </div>
-
-    <!-- Upload -->
-    <div class="card">
-      <div class="card-label">Anexe os CVs (até 10 arquivos)</div>
-      <div class="fmt-badges" style="margin-bottom:12px">
-        <span class="fmt-badge" style="background:rgba(232,51,74,.15);color:#FF8A98;border:1px solid rgba(232,51,74,.2)">PDF</span>
-        <span class="fmt-badge" style="background:rgba(27,79,140,.2);color:#7FB3E8;border:1px solid rgba(27,79,140,.3)">DOC / DOCX</span>
-        <span class="fmt-badge" style="background:rgba(61,214,140,.12);color:#3DD68C;border:1px solid rgba(61,214,140,.2)">PNG / JPG</span>
-        <span class="fmt-badge" style="background:rgba(245,166,35,.12);color:#F5A623;border:1px solid rgba(245,166,35,.2)">PDF Escaneado</span>
-      </div>
-      <div class="dropzone" id="dropzone">
-        <input type="file" id="file-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.bmp" multiple>
-        <div class="dz-icon">📁</div>
-        <div class="dz-title">Arraste ou clique para selecionar</div>
-        <div class="dz-sub">PDF, Word, imagem — vários de uma vez</div>
-      </div>
-      <div class="file-list" id="file-list"></div>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="file-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.bmp" multiple onchange="adicionarArquivos(this.files)">
+      <span class="dz-icon">📁</span>
+      <div class="dz-title">Arraste ou clique para selecionar</div>
+      <div class="dz-sub">PDF, Word ou imagem — vários de uma vez</div>
     </div>
-
-    <button class="btn-main" id="btn-analyze" onclick="startAnalysis()" disabled>
-      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <span id="btn-label">Analisar candidatos com IA</span>
-    </button>
+    <div class="file-list" id="file-list"></div>
   </div>
 
-  <!-- Progress -->
-  <div id="progress">
-    <div class="card">
-      <div class="card-label">Analisando candidatos</div>
-      <div id="progress-list"></div>
-    </div>
-  </div>
+  <button class="btn-main" id="btn-analisar" onclick="iniciarAnalise()" disabled>
+    🔍 <span id="btn-texto">Selecione os CVs</span>
+  </button>
+</div>
 
-  <!-- Results -->
-  <div id="results">
-    <div class="results-header">
-      <h2>Resultado da triagem</h2>
-      <span class="results-count" id="results-count"></span>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-label">Ranking</div>
-      <div class="rank-bar" id="rank-bar"></div>
-    </div>
-    <div id="cards-list"></div>
-    <button class="btn-sec" onclick="resetAll()">← Nova triagem</button>
+<!-- PROGRESSO -->
+<div id="progress-area" class="hidden">
+  <div class="card">
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:14px" id="prog-titulo">Analisando CVs...</div>
+    <div id="prog-lista"></div>
   </div>
+</div>
 
-  <footer>AlmeidaKrüger R&S · Powered by Claude AI · Uso interno · v1.0</footer>
+<!-- RESULTADOS -->
+<div id="results-area" class="hidden">
+  <div class="results-hdr">
+    <h2>Resultado da triagem</h2>
+    <span class="results-count" id="results-count"></span>
+  </div>
+  <div id="perfis-especiais" class="card hidden" style="padding:13px 16px;margin-bottom:12px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray2);margin-bottom:9px;">Perfis especiais identificados</div>
+    <div id="perfis-especiais-lista" style="display:flex;gap:7px;flex-wrap:wrap;"></div>
+  </div>
+  <div class="card" style="margin-bottom:12px;">
+    <div class="clabel">Ranking</div>
+    <div class="rank-bar" id="rank-bar"></div>
+  </div>
+  <div id="cards-lista"></div>
+  <button class="btn-sec" onclick="reiniciar()">← Nova triagem</button>
+</div>
+
+<footer>AlmeidaKrüger R&S · Powered by Claude AI · Uso interno</footer>
 </div>
 
 <script>
-// ─── API Key management ────────────────────────────────────────────────────────
-let API_KEY = localStorage.getItem('ak_api_key') || '';
-if (API_KEY) {
-  document.getElementById('api-key-input').value = API_KEY;
-  document.getElementById('api-status').textContent = '✓ Chave carregada';
-  document.getElementById('api-status').className = 'api-status ok';
-  updateBtn();
+// ── Estado ────────────────────────────────────────────────────────────────────
+let vagaSelecionada = 'executivo';
+let arquivos = [];
+let resultados = [];
+
+// ── Critérios das vagas ───────────────────────────────────────────────────────
+const CRITERIOS = {
+  executivo: `VAGA: EXECUTIVO DE VENDAS - CLT | AlmeidaKrüger (parceira Santander)
+Salário: Fixo R$1.700 + ajuda R$1.200 + variável a partir de R$6.000
+Responsabilidades: prospecção 100% ativa PJ, Conta PJ, Conta Integrada, Consórcio Akon, Fit Energia.
+Requisitos: mínimo 6 meses vendedor externo/executivo de vendas; disponibilidade deslocamento; comunicação e negociação; prospecção ativa e pós-vendas; foco em metas.
+CRITÉRIOS: EXCELENTE (75-100): adquirência (GetNet/Cielo/Stone/PagSeguro), produtos financeiros/bancários (conta/crédito/consórcio/seguros), vendas PAP/porta a porta, negociação/pós-vendas, CRM. Mais itens = score maior. BOM (45-74): vendas externas outros segmentos OU vendas internas financeiro/bancário. RUIM (0-44): sem experiência vendas, OU alta rotatividade (menos 6 meses na maioria das empresas), OU sem área comercial.
+ATENÇÃO: Se perfil mais adequado para SUPERVISOR COMERCIAL (liderança equipes, gestão, mais 1 ano gerindo pessoas), indique em vaga_alternativa. Se encontrar AlmeidaKrüger ou Almeida Kruger no histórico, marque ex_almeidakruger true. Se encontrar Ramos e Silva no histórico, marque ex_ramos_silva true. Rotatividade alta mencione explicitamente no resumo.`,
+  supervisor: `VAGA: SUPERVISOR COMERCIAL - CLT | AlmeidaKrüger (parceira Santander)
+Salário: Fixo R$2.500 + ajuda R$1.440 + variável sem teto (3 primeiros meses: R$3.000 garantidos)
+Responsabilidades: Liderar equipe vendas externas, metas, treinamentos, monitorar desempenho.
+CRITÉRIOS: EXCELENTE (75-100): mais 1 ano supervisor/gestor equipes externas, boa estabilidade, já supervisor em bancário/financeiro/adquirência. BOM (45-74): liderança acima 1 ano outros segmentos MAS com experiência como vendedor/executivo bancário/financeiro/adquirência. OU supervisor financeiro menos 1 ano. RUIM (0-44): sem gestão/liderança, OU alta rotatividade, OU nunca trabalhou com bancário/financeiro/adquirência.
+ATENÇÃO: Se perfil para EXECUTIVO DE VENDAS ou GERENTE REGIONAL, indique em vaga_alternativa. Se encontrar AlmeidaKrüger ou Almeida Kruger no histórico, marque ex_almeidakruger true. Se encontrar Ramos e Silva no histórico, marque ex_ramos_silva true. Rotatividade alta e ausência financeiro são fatores eliminatórios.`
+};
+
+// ── Vaga selector ─────────────────────────────────────────────────────────────
+function selecionarVaga(v) {
+  vagaSelecionada = v;
+  document.querySelectorAll('.vaga-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-vaga="${v}"]`).classList.add('active');
+  atualizarBotao();
 }
 
-function saveApiKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (!val.startsWith('sk-ant-')) {
-    document.getElementById('api-status').textContent = '✗ Chave inválida. Deve começar com sk-ant-';
-    document.getElementById('api-status').className = 'api-status err';
-    return;
-  }
-  API_KEY = val;
-  localStorage.setItem('ak_api_key', val);
-  document.getElementById('api-status').textContent = '✓ Chave salva com sucesso!';
-  document.getElementById('api-status').className = 'api-status ok';
-  updateBtn();
-}
-
-// ─── File handling ────────────────────────────────────────────────────────────
-let FILES = [];
-
-const dz = document.getElementById('dropzone');
-const fi = document.getElementById('file-input');
-dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
-dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
-dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); addFiles(e.dataTransfer.files); });
-fi.addEventListener('change', e => { addFiles(e.target.files); fi.value = ''; });
-
-function getExt(name) { return name.split('.').pop().toLowerCase(); }
-function isImage(ext) { return ['jpg','jpeg','png','gif','webp','bmp'].includes(ext); }
-function typeStyle(ext) {
-  if (ext === 'pdf') return ['rgba(232,51,74,.2)','#FF8A98'];
-  if (isImage(ext)) return ['rgba(61,214,140,.15)','#3DD68C'];
-  return ['rgba(27,79,140,.3)','#7FB3E8'];
-}
-
-function addFiles(fileList) {
-  const valid = Array.from(fileList).filter(f => /\.(pdf|doc|docx|jpg|jpeg|png|gif|webp|bmp)$/i.test(f.name));
-  const existing = new Set(FILES.map(f => f.name));
-  valid.slice(0, 10 - FILES.length).forEach(f => {
-    if (existing.has(f.name)) return;
-    FILES.push({ name: f.name, size: f.size, ext: getExt(f.name), file: f });
-  });
-  renderFiles();
-  updateBtn();
-}
-
-function renderFiles() {
-  document.getElementById('file-list').innerHTML = FILES.map((f, i) => {
-    const [bg, color] = typeStyle(f.ext);
-    return `<div class="file-item">
-      <div class="file-icon" style="background:${bg};color:${color}">${f.ext.toUpperCase()}</div>
-      <span class="file-name">${f.name}</span>
-      <span class="file-size">${(f.size/1024).toFixed(0)}KB</span>
-      <span class="file-st ready">✓ Pronto</span>
-      <button class="file-rm" onclick="removeFile(${i})">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function removeFile(i) { FILES.splice(i, 1); renderFiles(); updateBtn(); }
-
-function updateBtn() {
-  const ok = FILES.length > 0 && API_KEY.length > 0;
-  document.getElementById('btn-analyze').disabled = !ok;
-  const n = FILES.length;
-  document.getElementById('btn-label').textContent =
-    n > 1 ? `Analisar ${n} candidatos com IA` : n === 1 ? 'Analisar candidato com IA' : 'Analisar candidatos com IA';
-}
-
-// ─── PDF → images via pdf.js ──────────────────────────────────────────────────
-async function loadPdfJs() {
-  if (window.pdfjsLib) return;
-  await new Promise((res, rej) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js';
-    s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
-  window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
-}
-
-async function pdfToImages(buf) {
-  await loadPdfJs();
-  const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
-  const imgs = [];
-  const pages = Math.min(pdf.numPages, 3);
-  for (let i = 1; i <= pages; i++) {
-    const page = await pdf.getPage(i);
-    const vp = page.getViewport({ scale: 1.8 });
-    const canvas = document.createElement('canvas');
-    canvas.width = vp.width; canvas.height = vp.height;
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-    imgs.push(canvas.toDataURL('image/jpeg', 0.85).split(',')[1]);
-  }
-  return imgs;
-}
-
-// ─── PDF text extraction (pure JS) ───────────────────────────────────────────
-function extractPdfText(buf) {
+// ── Extração de texto PDF ─────────────────────────────────────────────────────
+function extrairTextoPDF(buf) {
   const b = new Uint8Array(buf);
-  let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+  let s = '';
+  for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
   let t = '';
-  (s.match(/BT[\s\S]{1,3000}?ET/g)||[]).forEach(blk => {
-    (blk.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)\s*Tj/g)||[]).forEach(m => {
+  (s.match(/BT[\s\S]{1,2000}?ET/g) || []).forEach(blk => {
+    (blk.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)\s*Tj/g) || []).forEach(m => {
       const x = m.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)/);
-      if (x) t += x[1].replace(/\\./g,' ') + ' ';
+      if (x) t += x[1].replace(/\\/g, '') + ' ';
     });
-    (blk.match(/\[([^\]]*)\]\s*TJ/g)||[]).forEach(m => {
-      (m.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)/g)||[]).forEach(p => t += p.slice(1,-1) + ' ');
+    (blk.match(/\[([^\]]*)\]\s*TJ/g) || []).forEach(m => {
+      (m.match(/\(([^)\\]*(?:\\.[^)\\]*)*)\)/g) || []).forEach(p => t += p.slice(1, -1) + ' ');
     });
   });
-  return t.replace(/\s+/g,' ').trim();
+  if (t.trim().length < 100) {
+    const runs = s.match(/[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9 .,\-@\/()]{10,}/g) || [];
+    t = runs.join(' ');
+  }
+  return t.replace(/\s+/g, ' ').trim();
 }
 
-// ─── DOCX text extraction ─────────────────────────────────────────────────────
-function extractDocxText(buf) {
+// ── Extração DOCX ─────────────────────────────────────────────────────────────
+function extrairTextoDOCX(buf) {
   const b = new Uint8Array(buf);
-  let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+  let s = '';
+  for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
   let t = '';
-  (s.match(/<w:t[^>]*>([^<]+)<\/w:t>/g)||[]).forEach(m => t += m.replace(/<[^>]+>/g,'') + ' ');
+  (s.match(/<w:t[^>]*>([^<]+)<\/w:t>/g) || []).forEach(m => t += m.replace(/<[^>]+>/g, '') + ' ');
   if (t.trim().length < 50)
-    (s.match(/[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9 .,\-@\/()]{8,}/g)||[]).forEach(r => t += r + ' ');
-  return t.replace(/\s+/g,' ').trim();
+    (s.match(/[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9 .,\-@\/()]{8,}/g) || []).forEach(r => t += r + ' ');
+  return t.replace(/\s+/g, ' ').trim();
 }
 
-// ─── Process file → { type, content, mime } ──────────────────────────────────
-async function processFile(entry) {
+// ── PDF para imagem via pdf.js ────────────────────────────────────────────────
+async function pdfParaImagem(buf) {
+  if (!window.pdfjsLib) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
+  }
+  try {
+    const pdf = await window.pdfjsLib.getDocument({ data: new Uint8Array(buf) }).promise;
+    const imgs = [];
+    for (let i = 1; i <= Math.min(pdf.numPages, 2); i++) {
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({ scale: 1.4 });
+      const canvas = document.createElement('canvas');
+      canvas.width = vp.width; canvas.height = vp.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+      imgs.push(canvas.toDataURL('image/jpeg', 0.75).split(',')[1]);
+    }
+    return imgs;
+  } catch(e) { return []; }
+}
+
+// ── Processar arquivo ─────────────────────────────────────────────────────────
+async function processarArquivo(entry) {
   const buf = await entry.file.arrayBuffer();
   const ext = entry.ext;
 
-  if (isImage(ext)) {
+  // Imagem
+  if (['jpg','jpeg','png','gif','webp','bmp'].includes(ext)) {
     return new Promise(res => {
       const reader = new FileReader();
-      reader.onload = e => res({ type:'images', content:[e.target.result.split(',')[1]], mime:entry.file.type });
+      reader.onload = e => res({ tipo: 'imagens', conteudo: [e.target.result.split(',')[1]], mime: entry.file.type });
       reader.readAsDataURL(entry.file);
     });
   }
 
+  // DOCX
   if (['doc','docx'].includes(ext)) {
-    const text = extractDocxText(buf);
-    if (text.length > 80) return { type:'text', content:text };
+    const t = extrairTextoDOCX(buf);
+    if (t.length > 80) return { tipo: 'texto', conteudo: t };
   }
 
+  // PDF — texto primeiro, imagem como fallback
   if (ext === 'pdf') {
-    const text = extractPdfText(buf);
-    if (text.length > 150) return { type:'text', content:text };
-    const imgs = await pdfToImages(buf);
-    if (imgs.length) return { type:'images', content:imgs, mime:'image/jpeg' };
+    const t = extrairTextoPDF(buf);
+    if (t.length > 150) return { tipo: 'texto', conteudo: t };
+    const imgs = await pdfParaImagem(buf);
+    if (imgs.length) return { tipo: 'imagens', conteudo: imgs, mime: 'image/jpeg' };
   }
 
   return null;
 }
 
-// ─── Call Anthropic API ───────────────────────────────────────────────────────
-const VAGA = `VAGA: EXECUTIVO DE VENDAS - CLT | AlmeidaKrüger (parceira Santander)
-Salário: Fixo R$1.700 + ajuda de custo R$1.200 + variável a partir de R$6.000
-Responsabilidades: prospecção 100% ativa de clientes PJ, venda de Conta PJ, Conta Integrada (Conta + máquina), Consórcio Akon, Fit Energia, garantir ativação e vinculação de contas.
-Requisitos: experiência mínima 6 meses como vendedor externo/executivo de vendas/gerente de carteiras; disponibilidade para deslocamento; habilidade em comunicação, negociação e técnicas de vendas; prospecção ativa e pós-vendas; foco em resultados e metas; Pacote Office.
-Horário: Seg-Sex 08h30-18h18.`;
+// ── Chamar Claude API ─────────────────────────────────────────────────────────
+async function analisarCV(dados, nome, criterios) {
+  const prompt = `Você é especialista em R&S da AlmeidaKrüger. Analise o CV para a vaga indicada.
 
-async function callAPI(fileData, fileName) {
-  const prompt = `Você é especialista em R&S da AlmeidaKrüger. Analise o CV para a vaga abaixo.
+${criterios}
 
-VAGA:
-${VAGA}
+Arquivo: ${nome}
 
-Arquivo: ${fileName}
+Responda APENAS com JSON válido. Sem markdown, sem texto antes ou depois do JSON.
 
-Score: 70-100 = exp sólida em vendas externas/prospecção ativa B2B, perfil hunter comprovado | 40-69 = potencial mas falta algo | 0-39 = não atende requisitos mínimos.
+{"score":<0-100>,"veredicto":"APROVAR|ANALISAR|DESCARTAR","nome_candidato":"<nome>","titulo":"<perfil 6-8 palavras>","resumo":"<2-3 frases>","pontos_positivos":["p1","p2","p3"],"pontos_negativos":["p1","p2"],"pontos_atencao":["p1","p2"],"informacoes_pendentes":["i1","i2"],"vaga_alternativa":"<null ou descrição>","ex_almeidakruger":<true|false>,"ex_ramos_silva":<true|false>,"msg_abordagem":"<WhatsApp>","msg_entrevista":"<convocar>","msg_descarte":"<retorno negativo>"}`;
 
-Retorne APENAS JSON válido (sem markdown):
-{"score":<0-100>,"veredicto":"APROVAR|ANALISAR|DESCARTAR","nome_candidato":"<nome>","titulo":"<perfil em 6-8 palavras>","resumo":"<2-3 frases de análise>","pontos_positivos":["p1","p2","p3"],"pontos_negativos":["p1","p2"],"pontos_atencao":["p1","p2"],"informacoes_pendentes":["i1","i2"],"msg_abordagem":"<WhatsApp personalizado>","msg_entrevista":"<convocar para entrevista>","msg_descarte":"<retorno negativo respeitoso>"}`;
-
-  let messages;
-  if (fileData.type === 'images') {
-    messages = [{ role:'user', content:[
-      ...fileData.content.map(b64 => ({ type:'image', source:{ type:'base64', media_type:fileData.mime||'image/jpeg', data:b64 } })),
-      { type:'text', text:prompt }
-    ]}];
+  let content;
+  if (dados.tipo === 'imagens') {
+    content = [
+      ...dados.conteudo.map(b64 => ({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: b64 } })),
+      { type: 'text', text: prompt }
+    ];
   } else {
-    messages = [{ role:'user', content:`${prompt}\n\nCONTEÚDO DO CV:\n${fileData.content.substring(0,4000)}` }];
+    content = prompt + '\n\nCV:\n' + dados.conteudo.substring(0, 3500);
   }
 
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type':'application/json', 'x-api-key':API_KEY, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
-    body: JSON.stringify({ model:'claude-opus-4-5', max_tokens:1200, messages })
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': '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',
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content }]
+    })
   });
 
   if (!resp.ok) {
-    const e = await resp.json().catch(() => ({}));
-    throw new Error(e.error?.message || `HTTP ${resp.status}`);
+    const txt = await resp.text().catch(() => '');
+    throw new Error(`HTTP ${resp.status}`);
   }
+
   const d = await resp.json();
-  const raw = (d.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
-  const m = raw.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error('Resposta inválida');
-  return JSON.parse(m[0]);
+  const texto = (d.content?.[0]?.text || '').trim();
+
+  // Extrai JSON com múltiplas tentativas
+  let json = null;
+  const m = texto.match(/\{[\s\S]*\}/);
+  if (m) {
+    try { json = JSON.parse(m[0]); } catch(e) {}
+  }
+  if (!json) {
+    // Tenta limpar e parsear
+    const limpo = texto.replace(/```json/g,'').replace(/```/g,'').trim();
+    try { json = JSON.parse(limpo); } catch(e) {}
+  }
+  if (!json) throw new Error('Resposta não pôde ser interpretada');
+  return json;
 }
 
-// ─── Analysis flow ────────────────────────────────────────────────────────────
-async function startAnalysis() {
-  if (!FILES.length || !API_KEY) return;
+// ── File handling ─────────────────────────────────────────────────────────────
+function getExt(nome) { return nome.split('.').pop().toLowerCase(); }
+function isImg(ext) { return ['jpg','jpeg','png','gif','webp','bmp'].includes(ext); }
+function corTipo(ext) {
+  if (ext === 'pdf') return ['rgba(193,41,46,.2)','#e87070'];
+  if (isImg(ext)) return ['rgba(61,214,140,.15)','#3DD68C'];
+  return ['rgba(3,53,76,.6)','#BDBCBC'];
+}
 
-  document.getElementById('form-area').style.display = 'none';
-  document.getElementById('progress').classList.add('show');
+function adicionarArquivos(files) {
+  const validos = Array.from(files).filter(f => /\.(pdf|doc|docx|jpg|jpeg|png|gif|webp|bmp)$/i.test(f.name));
+  const existentes = new Set(arquivos.map(f => f.name));
+  validos.slice(0, 50 - arquivos.length).forEach(f => {
+    if (!existentes.has(f.name))
+      arquivos.push({ name: f.name, size: f.size, ext: getExt(f.name), file: f });
+  });
+  renderFileList();
+  atualizarBotao();
+  document.getElementById('file-input').value = '';
+}
 
-  document.getElementById('progress-list').innerHTML = FILES.map((f,i) => `
-    <div class="prog-item" id="pi${i}">
+function removerArquivo(nome) {
+  arquivos = arquivos.filter(f => f.name !== nome);
+  renderFileList();
+  atualizarBotao();
+}
+
+function renderFileList() {
+  const el = document.getElementById('file-list');
+  el.innerHTML = arquivos.map(f => {
+    const [bg, cor] = corTipo(f.ext);
+    return `<div class="file-item">
+      <div class="file-ext" style="background:${bg};color:${cor}">${f.ext.toUpperCase()}</div>
+      <span class="file-name">${f.name}</span>
+      <span class="file-sz">${(f.size/1024).toFixed(0)}KB</span>
+      <span class="file-ok">✓ Pronto</span>
+      <button class="file-rm" onclick="removerArquivo('${f.name.replace(/'/g,"\\'")}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function atualizarBotao() {
+  const n = arquivos.length;
+  const btn = document.getElementById('btn-analisar');
+  const label = document.getElementById('btn-texto');
+  btn.disabled = n === 0;
+  const vagaLabel = vagaSelecionada === 'executivo' ? 'Executivo de Vendas' : 'Supervisor Comercial';
+  label.textContent = n > 1 ? `Analisar ${n} candidatos — ${vagaLabel}`
+    : n === 1 ? `Analisar candidato — ${vagaLabel}`
+    : 'Selecione os CVs';
+}
+
+// ── Drag & drop ───────────────────────────────────────────────────────────────
+const dz = document.getElementById('dropzone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); adicionarArquivos(e.dataTransfer.files); });
+
+// ── Análise principal ─────────────────────────────────────────────────────────
+async function iniciarAnalise() {
+  if (!arquivos.length) return;
+  document.getElementById('erro-box').classList.add('hidden');
+  document.getElementById('form-area').classList.add('hidden');
+  document.getElementById('progress-area').classList.remove('hidden');
+
+  const vagaLabel = vagaSelecionada === 'executivo' ? 'Executivo de Vendas' : 'Supervisor Comercial';
+  document.getElementById('prog-titulo').textContent = `Analisando ${arquivos.length} CV${arquivos.length>1?'s':''} — ${vagaLabel}`;
+
+  // Renderiza lista de progresso
+  const progLista = document.getElementById('prog-lista');
+  progLista.innerHTML = arquivos.map((f, i) => `
+    <div class="prog-item" id="pi-${i}">
       <span class="prog-name">${f.name.replace(/\.[^.]+$/,'')}</span>
-      <div class="spinner" id="sp${i}" style="display:none"></div>
-      <span class="prog-st wait" id="ps${i}">Aguardando...</span>
+      <div class="prog-badges" id="pb-${i}"></div>
+      <span class="prog-stat wait" id="ps-${i}">Aguardando</span>
     </div>`).join('');
 
-  const results = [];
+  resultados = [];
+  const criterios = CRITERIOS[vagaSelecionada];
 
-  for (let i = 0; i < FILES.length; i++) {
-    document.getElementById('sp'+i).style.display = 'block';
-    document.getElementById('ps'+i).textContent = 'Analisando...';
-    document.getElementById('ps'+i).className = 'prog-st go';
-    try {
-      const fd = await processFile(FILES[i]);
-      if (!fd) throw new Error('Arquivo ilegível');
-      const r = await callAPI(fd, FILES[i].name.replace(/\.[^.]+$/,''));
-      r._f = FILES[i].name.replace(/\.[^.]+$/,'');
-      results.push(r);
-      document.getElementById('sp'+i).style.display = 'none';
-      document.getElementById('ps'+i).textContent = `✓ ${r.score}/100`;
-      document.getElementById('ps'+i).className = 'prog-st done';
-    } catch(e) {
-      document.getElementById('sp'+i).style.display = 'none';
-      document.getElementById('ps'+i).textContent = 'Erro: ' + e.message.substring(0,40);
-      document.getElementById('ps'+i).className = 'prog-st err';
-    }
+  // Processa em lotes de 3
+  const LOTE = 3;
+  for (let i = 0; i < arquivos.length; i += LOTE) {
+    const lote = arquivos.slice(i, i + LOTE);
+
+    // Marca como "analisando"
+    lote.forEach((_, li) => {
+      const idx = i + li;
+      document.getElementById(`ps-${idx}`).className = 'prog-stat go';
+      document.getElementById(`ps-${idx}`).textContent = '⟳ Analisando';
+      // Adiciona spinner
+      const pb = document.getElementById(`pi-${idx}`);
+      const sp = document.createElement('div');
+      sp.className = 'spinner'; sp.id = `sp-${idx}`;
+      pb.insertBefore(sp, document.getElementById(`pb-${idx}`));
+    });
+
+    const promises = lote.map(async (arq, li) => {
+      const idx = i + li;
+      try {
+        const dados = await processarArquivo(arq);
+        if (!dados) throw new Error('Não foi possível ler o arquivo');
+        const r = await analisarCV(dados, arq.name.replace(/\.[^.]+$/,''), criterios);
+        r._f = arq.name.replace(/\.[^.]+$/,'');
+
+        // Remove spinner
+        const sp = document.getElementById(`sp-${idx}`);
+        if (sp) sp.remove();
+
+        document.getElementById(`ps-${idx}`).className = 'prog-stat done';
+        document.getElementById(`ps-${idx}`).textContent = `✓ ${r.score}/100`;
+
+        // Badges especiais
+        const pb = document.getElementById(`pb-${idx}`);
+        if (r.ex_almeidakruger) pb.innerHTML += '<span style="font-size:9px;padding:1px 5px;border-radius:5px;background:rgba(193,41,46,.25);color:#FF8A8A;margin-right:4px">⭐AK</span>';
+        if (r.ex_ramos_silva) pb.innerHTML += '<span style="font-size:9px;padding:1px 5px;border-radius:5px;background:rgba(245,166,35,.15);color:#F5A623">⚑RS</span>';
+
+        return r;
+      } catch(e) {
+        const sp = document.getElementById(`sp-${idx}`);
+        if (sp) sp.remove();
+        document.getElementById(`ps-${idx}`).className = 'prog-stat err';
+        document.getElementById(`ps-${idx}`).textContent = `✕ ${(e.message||'erro').substring(0,30)}`;
+        console.error('Erro CV', arq.name, e);
+        return null;
+      }
+    });
+
+    const loteRes = await Promise.all(promises);
+    loteRes.forEach(r => r && resultados.push(r));
   }
 
-  results.sort((a,b) => b.score - a.score);
+  resultados.sort((a, b) => b.score - a.score);
+
   setTimeout(() => {
-    document.getElementById('progress').classList.remove('show');
-    showResults(results);
-  }, 400);
+    document.getElementById('progress-area').classList.add('hidden');
+    if (!resultados.length) {
+      document.getElementById('form-area').classList.remove('hidden');
+      const eb = document.getElementById('erro-box');
+      eb.textContent = '⚠ Nenhum CV foi analisado com sucesso. Verifique se os arquivos estão legíveis e tente novamente.';
+      eb.classList.remove('hidden');
+    } else {
+      exibirResultados();
+    }
+  }, 300);
 }
 
-// ─── Render results ───────────────────────────────────────────────────────────
-function showResults(results) {
-  if (!results.length) {
-    document.getElementById('form-area').style.display = 'block';
-    alert('Nenhum CV analisado com sucesso. Verifique os arquivos e tente novamente.');
-    return;
+// ── Renderizar resultados ─────────────────────────────────────────────────────
+function exibirResultados() {
+  const vagaLabel = vagaSelecionada === 'executivo' ? 'Executivo de Vendas' : 'Supervisor Comercial';
+  document.getElementById('results-count').textContent = `${resultados.length} analisado${resultados.length!==1?'s':''}`;
+
+  // Perfis especiais
+  const exAK = resultados.filter(r => r.ex_almeidakruger);
+  const exRS = resultados.filter(r => r.ex_ramos_silva);
+  if (exAK.length || exRS.length) {
+    const lista = document.getElementById('perfis-especiais-lista');
+    lista.innerHTML = [
+      ...exAK.map(r => `<span style="padding:4px 11px;border-radius:20px;font-size:11px;background:rgba(193,41,46,.2);color:#FF8A8A;border:1px solid rgba(193,41,46,.4)">⭐ ${r.nome_candidato||r._f} · Ex-AlmeidaKrüger</span>`),
+      ...exRS.map(r => `<span style="padding:4px 11px;border-radius:20px;font-size:11px;background:rgba(245,166,35,.15);color:#F5A623;border:1px solid rgba(245,166,35,.35)">⚑ ${r.nome_candidato||r._f} · Ex-Ramos e Silva</span>`)
+    ].join('');
+    document.getElementById('perfis-especiais').classList.remove('hidden');
   }
 
-  document.getElementById('results').classList.add('show');
-  document.getElementById('results-count').textContent =
-    `${results.length} candidato${results.length!==1?'s':''} analisado${results.length!==1?'s':''}`;
-
-  document.getElementById('rank-bar').innerHTML = results.map((r,i) => {
-    const cls = r.score>=70?'best':r.score>=45?'mid':'low';
-    return `<span class="rank-pill ${cls}" onclick="scrollTo('cv${i}')">${i+1}º ${r.nome_candidato||r._f} · ${r.score}%</span>`;
+  // Ranking pills
+  const rankBar = document.getElementById('rank-bar');
+  rankBar.innerHTML = resultados.map((r, i) => {
+    const cls = r.score >= 75 ? 'best' : r.score >= 45 ? 'mid' : 'low';
+    return `<button class="rank-pill ${cls}" onclick="scrollParaCard(${i})">${i+1}º ${r.nome_candidato||r._f} · ${r.score}%</button>`;
   }).join('');
 
-  document.getElementById('cards-list').innerHTML = results.map((r,i) => buildCard(r,i)).join('');
+  // Cards
+  document.getElementById('cards-lista').innerHTML = resultados.map((r, i) => buildCard(r, i)).join('');
+  document.getElementById('results-area').classList.remove('hidden');
 }
 
-function scrollTo(id) {
-  const el = document.getElementById(id);
-  if (el) { el.scrollIntoView({behavior:'smooth',block:'start'}); el.classList.add('open'); }
+function scrollParaCard(i) {
+  const el = document.getElementById(`cv-${i}`);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); abrirCard(i); }
 }
 
+// ── Builder de card ───────────────────────────────────────────────────────────
 function buildCard(r, i) {
-  const s = r.score||0;
-  const color = s>=70?'#3DD68C':s>=45?'#F5A623':'#E8334A';
-  const circ = 150, off = circ - (s/100)*circ;
-  const rnk = [
-    {bg:'rgba(245,166,35,.2)',color:'#F5A623',border:'rgba(245,166,35,.4)'},
-    {bg:'rgba(160,174,207,.15)',color:'#A0AECF',border:'rgba(160,174,207,.3)'},
-    {bg:'rgba(196,149,106,.15)',color:'#C4956A',border:'rgba(196,149,106,.3)'},
-    {bg:'rgba(255,255,255,.06)',color:'#6B7FA3',border:'rgba(255,255,255,.1)'},
-  ][Math.min(i,3)];
+  const s = r.score || 0;
+  const cor = s >= 75 ? '#3DD68C' : s >= 45 ? '#F5A623' : '#E8334A';
+  const circ = 125, off = circ - (s/100)*circ;
+  const rkCores = [
+    { bg:'rgba(193,41,46,.2)', c:'#e87070', b:'rgba(193,41,46,.4)' },
+    { bg:'rgba(189,188,188,.12)', c:'#BDBCBC', b:'rgba(189,188,188,.3)' },
+    { bg:'rgba(157,157,156,.1)', c:'#9D9D9C', b:'rgba(157,157,156,.25)' },
+    { bg:'rgba(255,255,255,.05)', c:'rgba(255,255,255,.4)', b:'rgba(255,255,255,.1)' }
+  ][Math.min(i, 3)];
 
-  const v = (r.veredicto||'').toUpperCase();
-  const vs = v==='APROVAR'
-    ? {bg:'rgba(61,214,140,.2)',color:'#3DD68C',label:'✓ Recomendar'}
-    : v==='ANALISAR'
-    ? {bg:'rgba(245,166,35,.15)',color:'#F5A623',label:'⚠ Avaliar'}
-    : {bg:'rgba(232,51,74,.15)',color:'#FF8A98',label:'✕ Não aderente'};
+  const v = (r.veredicto || '').toUpperCase();
+  const vBadge = v === 'APROVAR' ? '<span class="badge-mini badge-aprovar">✓ Recomendar</span>'
+    : v === 'ANALISAR' ? '<span class="badge-mini badge-analisar">⚠ Avaliar</span>'
+    : '<span class="badge-mini badge-descartar">✕ Não aderente</span>';
 
-  const boxes = [
-    {label:'Pontos fortes', items:r.pontos_positivos, bg:'rgba(61,214,140,.07)', border:'rgba(61,214,140,.2)', color:'#3DD68C'},
-    {label:'Pontos negativos', items:r.pontos_negativos, bg:'rgba(232,51,74,.07)', border:'rgba(232,51,74,.2)', color:'#FF8A98'},
-    {label:'Atenção', items:r.pontos_atencao, bg:'rgba(245,166,35,.07)', border:'rgba(245,166,35,.2)', color:'#F5A623'},
-    {label:'Pendências no CV', items:r.informacoes_pendentes, bg:'rgba(107,127,163,.07)', border:'rgba(107,127,163,.2)', color:'#A0AECF'},
+  const temAlt = r.vaga_alternativa && r.vaga_alternativa !== 'null' && r.vaga_alternativa !== null;
+  const altBadge = temAlt ? '<span class="badge-mini badge-alt">↗ Vaga alternativa</span>' : '';
+  const akBadge = r.ex_almeidakruger ? '<span class="badge-ak">⭐ Ex-AK</span>' : '';
+  const rsBadge = r.ex_ramos_silva ? '<span class="badge-rs">⚑ Ex-RS</span>' : '';
+
+  const cxs = [
+    { t:'Pontos fortes', d:r.pontos_positivos, bg:'rgba(61,214,140,.06)', b:'rgba(61,214,140,.2)', c:'#3DD68C' },
+    { t:'Pontos negativos', d:r.pontos_negativos, bg:'rgba(193,41,46,.06)', b:'rgba(193,41,46,.2)', c:'#e87070' },
+    { t:'Atenção', d:r.pontos_atencao, bg:'rgba(245,166,35,.06)', b:'rgba(245,166,35,.2)', c:'#F5A623' },
+    { t:'Pendências', d:r.informacoes_pendentes, bg:'rgba(107,127,163,.06)', b:'rgba(107,127,163,.2)', c:'#BDBCBC' },
   ];
 
-  const ml = (items,color) => (items||[]).map(p =>
-    `<div class="detail-item"><span class="detail-dot" style="background:${color}"></span><span>${p}</span></div>`
-  ).join('');
+  const detailBoxes = cxs.map(b => `
+    <div class="detail-box" style="background:${b.bg};border-color:${b.b}">
+      <h4 style="color:${b.c}">${b.t}</h4>
+      ${(b.d||[]).map(p => `<div class="detail-item"><span class="detail-dot" style="background:${b.c}"></span><span>${p}</span></div>`).join('')}
+    </div>`).join('');
 
-  const ico = `<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+  const alertas = [
+    r.ex_almeidakruger ? `<div class="alert-box alert-ak"><span>⭐</span><span>Ex-AlmeidaKrüger — abordagem diferenciada para recontratação</span></div>` : '',
+    r.ex_ramos_silva ? `<div class="alert-box alert-rs"><span>⚑</span><span>Ex-Ramos e Silva — sinalização especial</span></div>` : '',
+    temAlt ? `<div class="alert-box alert-alt"><div class="alert-alt-label">Sugestão de vaga alternativa</div><div style="font-size:12px;color:rgba(127,179,232,.85);line-height:1.5">${r.vaga_alternativa}</div></div>` : ''
+  ].join('');
 
-  return `<div class="cv-card" id="cv${i}">
-  <div class="cv-header" onclick="toggleCard('cv${i}')">
-    <div class="rank-num" style="background:${rnk.bg};color:${rnk.color};border:1.5px solid ${rnk.border}">${i+1}</div>
-    <div class="score-ring">
-      <svg width="54" height="54" viewBox="0 0 54 54">
-        <circle cx="27" cy="27" r="24" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="4.5"/>
-        <circle cx="27" cy="27" r="24" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${off}"/>
+  return `<div class="cv-card${r.ex_almeidakruger?' exak':''}" id="cv-${i}">
+  <div class="cv-hdr" onclick="toggleCard(${i})">
+    <div class="rk-num" style="background:${rkCores.bg};color:${rkCores.c};border:1.5px solid ${rkCores.b}">${i+1}</div>
+    <div class="score-ring" style="width:48px;height:48px">
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="3.5"/>
+        <circle cx="24" cy="24" r="20" fill="none" stroke="${cor}" stroke-width="3.5"
+          stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${off}"/>
       </svg>
-      <div class="score-val" style="color:${color}">${s}</div>
+      <div class="score-val" style="color:${cor};font-size:13px">${s}</div>
     </div>
-    <div class="cv-meta">
-      <div class="cv-name">${r.nome_candidato||r._f}</div>
-      <div class="cv-title">${r.titulo||''}</div>
-      <span class="verdict-badge" style="background:${vs.bg};color:${vs.color}">${vs.label}</span>
+    <div class="cv-info">
+      <div class="cv-name">${r.nome_candidato||r._f} ${akBadge} ${rsBadge}</div>
+      <div class="cv-titulo">${r.titulo||''}</div>
+      <div class="cv-badges">${vBadge} ${altBadge}</div>
     </div>
-    <span class="chevron">⌄</span>
+    <span class="chev">⌄</span>
   </div>
-  <div class="cv-detail">
-    <div class="resumo">${r.resumo||''}</div>
-    <div class="detail-grid">
-      ${boxes.map(b=>`<div class="detail-box" style="background:${b.bg};border-color:${b.border}"><h4 style="color:${b.color}">${b.label}</h4>${ml(b.items,b.color)}</div>`).join('')}
-    </div>
-    <div class="msg-section">
+  <div class="cv-detail" id="cd-${i}">
+    ${alertas}
+    <div class="resumo-box" style="margin-top:${alertas?'6px':'10px'}">${r.resumo||''}</div>
+    <div class="detail-grid">${detailBoxes}</div>
+    <div class="msg-sec">
       <div class="msg-label">Mensagens prontas</div>
       <div class="msg-tabs">
-        <button class="msg-tab on" onclick="switchTab(this,'ma${i}')">Abordagem</button>
-        <button class="msg-tab" onclick="switchTab(this,'me${i}')">Convocar entrevista</button>
-        <button class="msg-tab" onclick="switchTab(this,'md${i}')">Retorno negativo</button>
+        <button class="msg-tab active" onclick="trocaAba(this,'msg-ab-${i}')">Abordagem</button>
+        <button class="msg-tab" onclick="trocaAba(this,'msg-en-${i}')">Convocar entrevista</button>
+        <button class="msg-tab" onclick="trocaAba(this,'msg-de-${i}')">Retorno negativo</button>
       </div>
-      <div class="msg-box on" id="ma${i}"><div class="msg-text">${r.msg_abordagem||''}</div><button class="copy-btn" onclick="copyMsg('ma${i}',this)">${ico}</button></div>
-      <div class="msg-box" id="me${i}"><div class="msg-text">${r.msg_entrevista||''}</div><button class="copy-btn" onclick="copyMsg('me${i}',this)">${ico}</button></div>
-      <div class="msg-box" id="md${i}"><div class="msg-text">${r.msg_descarte||''}</div><button class="copy-btn" onclick="copyMsg('md${i}',this)">${ico}</button></div>
+      <div class="msg-box active" id="msg-ab-${i}">
+        <div class="msg-text">${r.msg_abordagem||''}</div>
+        <button class="copy-btn" onclick="copiar('msg-ab-${i}',this)">⎘</button>
+      </div>
+      <div class="msg-box" id="msg-en-${i}">
+        <div class="msg-text">${r.msg_entrevista||''}</div>
+        <button class="copy-btn" onclick="copiar('msg-en-${i}',this)">⎘</button>
+      </div>
+      <div class="msg-box" id="msg-de-${i}">
+        <div class="msg-text">${r.msg_descarte||''}</div>
+        <button class="copy-btn" onclick="copiar('msg-de-${i}',this)">⎘</button>
+      </div>
     </div>
   </div>
 </div>`;
 }
 
-function toggleCard(id) { document.getElementById(id).classList.toggle('open'); }
-
-function switchTab(btn, tid) {
-  const p = btn.closest('.msg-section');
-  p.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('on'));
-  p.querySelectorAll('.msg-box').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(tid).classList.add('on');
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function toggleCard(i) {
+  const card = document.getElementById(`cv-${i}`);
+  card.classList.toggle('open');
 }
-
-function copyMsg(id, btn) {
-  navigator.clipboard.writeText(document.getElementById(id).querySelector('.msg-text').textContent).then(() => {
-    btn.classList.add('ok'); btn.innerHTML = '✓';
-    setTimeout(() => { btn.classList.remove('ok'); btn.innerHTML = `<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`; }, 2000);
+function abrirCard(i) {
+  document.getElementById(`cv-${i}`).classList.add('open');
+}
+function trocaAba(btn, targetId) {
+  const sec = btn.closest('.msg-sec');
+  sec.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  sec.querySelectorAll('.msg-box').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(targetId).classList.add('active');
+}
+function copiar(id, btn) {
+  const txt = document.getElementById(id).querySelector('.msg-text').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.classList.add('ok'); btn.textContent = '✓';
+    setTimeout(() => { btn.classList.remove('ok'); btn.textContent = '⎘'; }, 2000);
   });
 }
-
-function resetAll() {
-  FILES = [];
+function reiniciar() {
+  arquivos = []; resultados = [];
   document.getElementById('file-list').innerHTML = '';
-  document.getElementById('results').classList.remove('show');
-  document.getElementById('cards-list').innerHTML = '';
-  document.getElementById('form-area').style.display = 'block';
-  updateBtn();
-  window.scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('rank-bar').innerHTML = '';
+  document.getElementById('cards-lista').innerHTML = '';
+  document.getElementById('perfis-especiais').classList.add('hidden');
+  document.getElementById('results-area').classList.add('hidden');
+  document.getElementById('erro-box').classList.add('hidden');
+  document.getElementById('form-area').classList.remove('hidden');
+  atualizarBotao();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 </body>
