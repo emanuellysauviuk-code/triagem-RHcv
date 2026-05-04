@@ -170,7 +170,30 @@ footer{text-align:center;margin-top:28px;font-size:11px;color:rgba(255,255,255,.
 
 <!-- FORMULÁRIO -->
 <div id="form-area">
-  <div class="card">
+  
+<!-- CHAVE API -->
+<div id="key-section" class="card" style="margin-bottom:12px">
+  <div class="clabel">Chave de API</div>
+  <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+    <input id="key-input" type="password" placeholder="sk-ant-api03-..."
+      style="flex:1;min-width:200px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:13px;padding:9px 13px;outline:none;font-family:monospace"
+      oninput="checkKey()">
+    <button onclick="salvarChave()"
+      style="padding:9px 20px;background:linear-gradient(135deg,#C1292E,#9e1f23);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0">
+      Salvar
+    </button>
+    <button id="btn-limpar" onclick="limparChave()" style="display:none;padding:9px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#9D9D9C;font-size:12px;cursor:pointer;flex-shrink:0">
+      Trocar chave
+    </button>
+  </div>
+  <div id="key-status" style="margin-top:8px;font-size:12px"></div>
+  <div style="margin-top:6px;font-size:11px;color:#6B7FA3;line-height:1.5">
+    A chave fica salva <strong>só no seu navegador</strong> — nunca sai do computador.<br>
+    Não tem uma chave? <a href="https://console.anthropic.com" target="_blank" style="color:#C1292E">console.anthropic.com → API Keys → Create Key</a>
+  </div>
+</div>
+
+<div class="card">
     <div class="clabel">Selecione a vaga</div>
     <div class="vaga-grid">
       <button class="vaga-btn active" data-vaga="executivo" onclick="selecionarVaga('executivo')">
@@ -345,12 +368,18 @@ async function processarArquivo(entry) {
     if (t.length > 80) return { tipo: 'texto', conteudo: t };
   }
 
-  // PDF — texto primeiro, imagem como fallback
+  // PDF — tenta texto, mas se parecer escaneado usa imagem
   if (ext === 'pdf') {
     const t = extrairTextoPDF(buf);
-    if (t.length > 150) return { tipo: 'texto', conteudo: t };
+    // Só usa texto se tiver conteúdo substancial (PDFs com fonte embebida)
+    if (t.length > 200 && /[a-záàãâéêíóôõúç]{3,}/i.test(t)) {
+      return { tipo: 'texto', conteudo: t };
+    }
+    // Caso contrário usa imagem (PDFs escaneados, gerados por foto, etc)
     const imgs = await pdfParaImagem(buf);
     if (imgs.length) return { tipo: 'imagens', conteudo: imgs, mime: 'image/jpeg' };
+    // Último recurso: texto mesmo que fraco
+    if (t.length > 50) return { tipo: 'texto', conteudo: t };
   }
 
   return null;
@@ -358,62 +387,107 @@ async function processarArquivo(entry) {
 
 // ── Chamar Claude API ─────────────────────────────────────────────────────────
 async function analisarCV(dados, nome, criterios) {
-  const prompt = `Você é especialista em R&S da AlmeidaKrüger. Analise o CV para a vaga indicada.
+  const apiKey = localStorage.getItem('ak_api_key') || '';
+  if (!apiKey) {
+    throw new Error('Chave de API não configurada. Cole sua chave no campo acima.');
+  }
+
+  const prompt = `Você é especialista em R&S da AlmeidaKrüger. Analise o CV para a vaga.
 
 ${criterios}
 
 Arquivo: ${nome}
 
-Responda APENAS com JSON válido. Sem markdown, sem texto antes ou depois do JSON.
-
-{"score":<0-100>,"veredicto":"APROVAR|ANALISAR|DESCARTAR","nome_candidato":"<nome>","titulo":"<perfil 6-8 palavras>","resumo":"<2-3 frases>","pontos_positivos":["p1","p2","p3"],"pontos_negativos":["p1","p2"],"pontos_atencao":["p1","p2"],"informacoes_pendentes":["i1","i2"],"vaga_alternativa":"<null ou descrição>","ex_almeidakruger":<true|false>,"ex_ramos_silva":<true|false>,"msg_abordagem":"<WhatsApp>","msg_entrevista":"<convocar>","msg_descarte":"<retorno negativo>"}`;
+IMPORTANTE: Retorne SOMENTE um objeto JSON, sem explicações, sem markdown, sem texto antes ou depois.
+O JSON deve ter exatamente estes campos:
+- score: número de 0 a 100
+- veredicto: string "APROVAR", "ANALISAR" ou "DESCARTAR"
+- nome_candidato: string com nome completo
+- titulo: string com perfil em 6-8 palavras
+- resumo: string com 2-3 frases avaliando o candidato
+- pontos_positivos: array de strings
+- pontos_negativos: array de strings
+- pontos_atencao: array de strings
+- informacoes_pendentes: array de strings
+- vaga_alternativa: string ou null
+- ex_almeidakruger: boolean true ou false
+- ex_ramos_silva: boolean true ou false
+- msg_abordagem: string com mensagem WhatsApp personalizada
+- msg_entrevista: string para convocar entrevista
+- msg_descarte: string de retorno negativo respeitoso`;
 
   let content;
   if (dados.tipo === 'imagens') {
     content = [
-      ...dados.conteudo.map(b64 => ({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: b64 } })),
+      ...dados.conteudo.map(b64 => ({
+        type: 'image',
+        source: { type: 'base64', media_type: dados.mime || 'image/jpeg', data: b64 }
+      })),
       { type: 'text', text: prompt }
     ];
   } else {
-    content = prompt + '\n\nCV:\n' + dados.conteudo.substring(0, 3500);
+    content = prompt + '\n\nCONTEÚDO DO CV:\n' + dados.conteudo.substring(0, 4000);
   }
 
-  const resp = await fetch('http://localhost:3000/analisar', {
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': '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',
+      'x-api-key': apiKey,
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
+      max_tokens: 1200,
       messages: [{ role: 'user', content }]
     })
   });
 
   if (!resp.ok) {
-    const txt = await resp.text().catch(() => '');
-    throw new Error(`HTTP ${resp.status}`);
+    const errBody = await resp.json().catch(() => ({}));
+    const msg = errBody.error?.message || `HTTP ${resp.status}`;
+    if (resp.status === 401) throw new Error('Chave de API inválida ou expirada. Verifique e salve uma nova chave.');
+    if (resp.status === 429) throw new Error('Limite de requisições atingido. Aguarde um momento e tente novamente.');
+    throw new Error(msg);
   }
 
   const d = await resp.json();
   const texto = (d.content?.[0]?.text || '').trim();
 
-  // Extrai JSON com múltiplas tentativas
-  let json = null;
-  const m = texto.match(/\{[\s\S]*\}/);
-  if (m) {
-    try { json = JSON.parse(m[0]); } catch(e) {}
+  if (!texto) throw new Error('API retornou resposta vazia');
+
+  // Múltiplas tentativas de parse do JSON
+  // Tentativa 1: extrair JSON com regex
+  const jsonMatch = texto.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    try {
+      return JSON.parse(jsonMatch[0]);
+    } catch(e) {}
   }
-  if (!json) {
-    // Tenta limpar e parsear
-    const limpo = texto.replace(/```json/g,'').replace(/```/g,'').trim();
-    try { json = JSON.parse(limpo); } catch(e) {}
+
+  // Tentativa 2: limpar markdown e parsear
+  const limpo = texto
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
+  try {
+    return JSON.parse(limpo);
+  } catch(e) {}
+
+  // Tentativa 3: encontrar início e fim do JSON manualmente
+  const inicio = texto.indexOf('{');
+  const fim = texto.lastIndexOf('}');
+  if (inicio >= 0 && fim > inicio) {
+    try {
+      return JSON.parse(texto.substring(inicio, fim + 1));
+    } catch(e) {}
   }
-  if (!json) throw new Error('Resposta não pôde ser interpretada');
-  return json;
+
+  // Se nenhuma tentativa funcionou, lança erro com texto recebido para debug
+  console.error('Texto recebido da API:', texto.substring(0, 200));
+  throw new Error('Não foi possível interpretar a resposta. Tente novamente.');
 }
 
 // ── File handling ─────────────────────────────────────────────────────────────
@@ -538,7 +612,7 @@ async function iniciarAnalise() {
         const sp = document.getElementById(`sp-${idx}`);
         if (sp) sp.remove();
         document.getElementById(`ps-${idx}`).className = 'prog-stat err';
-        document.getElementById(`ps-${idx}`).textContent = `✕ ${(e.message||'erro').substring(0,30)}`;
+        document.getElementById(`ps-${idx}`).textContent = `✕ ${(e.message||'erro').substring(0,60)}`;
         console.error('Erro CV', arq.name, e);
         return null;
       }
@@ -718,6 +792,37 @@ function reiniciar() {
   atualizarBotao();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// ── Chave API ─────────────────────────────────────────────────────────────────
+function checkKey() {
+  const saved = localStorage.getItem('ak_api_key');
+  const status = document.getElementById('key-status');
+  const limpar = document.getElementById('btn-limpar');
+  const input = document.getElementById('key-input');
+  if (saved) {
+    status.innerHTML = '<span style="color:#3DD68C">✓ Chave carregada e salva no navegador</span>';
+    input.placeholder = '••••••••••••••••••••••••••••••••••';
+    limpar.style.display = 'inline-block';
+  } else {
+    status.innerHTML = '<span style="color:#F5A623">⚠ Insira sua chave para usar a ferramenta</span>';
+    limpar.style.display = 'none';
+  }
+}
+function salvarChave() {
+  const v = document.getElementById('key-input').value.trim();
+  if (!v) { alert('Cole sua chave antes de salvar.'); return; }
+  if (!v.startsWith('sk-ant-')) { alert('Chave inválida — deve começar com sk-ant-'); return; }
+  localStorage.setItem('ak_api_key', v);
+  document.getElementById('key-input').value = '';
+  checkKey();
+}
+function limparChave() {
+  localStorage.removeItem('ak_api_key');
+  document.getElementById('key-input').value = '';
+  checkKey();
+}
+window.addEventListener('DOMContentLoaded', checkKey);
+
 </script>
 </body>
 </html>
